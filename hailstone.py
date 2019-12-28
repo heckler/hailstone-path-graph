@@ -10,9 +10,10 @@
 #
 #------------------------------------------------------------------------------
 
+import os
 
 def export_results(n, graph):
-    f = open("graph_%d.dot" % n,"w+")
+    f = open("out/graph_%d.dot" % n,"w+")
     f.write("digraph {\n")
     for key in graph:
         f.write("\t%d -> %d\n" % (key, graph[key]))
@@ -20,10 +21,13 @@ def export_results(n, graph):
 
 
 # initial conditions:
-graph = {1:1, 2:1}
+graph = {1:1}
 target = 2
 
-while (True):
+if not os.path.exists("out"):
+    os.makedirs("out")
+
+while (target < 100000):
     target = target + 1
     n = target
 
@@ -37,8 +41,8 @@ while (True):
         if (graph.has_key(n)):
             graph[m] = n
             done = True
-    
-    print(target, m)
+    if (target % 1000) == 0:
+        print(target, m)
 
     if (target % 1000) == 0:
         export_results(target, graph)
